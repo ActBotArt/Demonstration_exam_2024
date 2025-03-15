@@ -6,6 +6,11 @@
 - **Компетенция:** Разработка программного обеспечения
 - **Разработчик:** ActBotArt
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/0beffee1-b8da-4209-98ff-49f6099429ff" width="400px"">
+  <img src="https://github.com/user-attachments/assets/fcc886ca-2716-484c-a42e-5b7fbb1413d7" width="500px"">
+</div>
+
 ## Описание проекта
 Данный проект представляет собой информационную систему для производственной компании "Мастер пол", разработанную в рамках демонстрационного экзамена 2024 года.
 

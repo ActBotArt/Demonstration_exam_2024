@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2f38553769054890a508b50252becbed" Name="Diagram1">
+        <EntityTypeShape EntityType="partner_system_dbModel.Employee" Width="1.5" PointX="3" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.EquipmentAccess" Width="1.5" PointX="5.25" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.Material" Width="1.5" PointX="3" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.Order" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.Partner" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.PartnerSale" Width="1.5" PointX="8.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.PartnerType" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.Product" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.Production" Width="1.5" PointX="5.25" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.ProductType" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.Supplier" Width="1.5" PointX="0.75" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.sysdiagram" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.Warehouse" Width="1.5" PointX="5.25" PointY="14.25" IsExpanded="true" />
+        <AssociationConnector Association="partner_system_dbModel.fk_equipment_employee" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_production_employee" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_warehouse_employee" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_materials_suppliers" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_warehouse_material" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_orders_partner" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_orders_product" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_partner_partner_type" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_sales_partner" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_sales_product" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_product_product_type" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.fk_production_product" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

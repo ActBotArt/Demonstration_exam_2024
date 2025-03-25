@@ -20,6 +20,7 @@ namespace Demonstration_exam_2024.Forms
             LoadData();
         }
 
+
         private void SetupForm()
         {
             try
@@ -34,7 +35,8 @@ namespace Demonstration_exam_2024.Forms
 
                 // Настройка кнопок
                 StyleButtons();
-
+                // Загрузка логотипа
+                LoadLogo();
                 // Настройка валидации
                 SetupValidation();
             }
@@ -85,7 +87,20 @@ namespace Demonstration_exam_2024.Forms
                     e.Handled = true;
             };
         }
+        private void LoadLogo()
+        {
+            string iconRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+            string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
 
+            if (System.IO.File.Exists(iconFullPath))
+            {
+                this.Icon = new Icon(iconFullPath);
+            }
+            else
+            {
+                MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
         private void LoadData()
         {
             if (partnerId.HasValue)

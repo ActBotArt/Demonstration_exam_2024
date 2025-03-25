@@ -18,6 +18,8 @@ namespace Demonstration_exam_2024.Forms
             db = new DatabaseContext();
             this.partnerId = partnerId;
             LoadSalesHistory();
+            // Загрузка логотипа
+            LoadLogo();
         }
 
         private void LoadSalesHistory()
@@ -58,11 +60,25 @@ namespace Demonstration_exam_2024.Forms
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void LoadLogo()
+        {
+            string iconRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+            string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
 
+            if (System.IO.File.Exists(iconFullPath))
+            {
+                this.Icon = new Icon(iconFullPath);
+            }
+            else
+            {
+                MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
             db?.Dispose();
         }
+
     }
 }

@@ -113,18 +113,16 @@ namespace Demonstration_exam_2024.Forms
 
         private void LoadLogo()
         {
-            try
+            string iconRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+            string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
+
+            if (System.IO.File.Exists(iconFullPath))
             {
-                string logoPath = System.IO.Path.Combine(Application.StartupPath, "..", "Resources", "Мастер_пол.png");
-                if (System.IO.File.Exists(logoPath))
-                {
-                    pictureBoxLogo.Image = Image.FromFile(logoPath);
-                    pictureBoxLogo.SizeMode = PictureBoxSizeMode.Zoom;
-                }
+                this.Icon = new Icon(iconFullPath);
             }
-            catch (Exception ex)
+            else
             {
-                Debug.WriteLine($"Ошибка при загрузке логотипа: {ex.Message}");
+                MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

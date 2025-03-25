@@ -12,16 +12,10 @@ namespace Demonstration_exam_2024
     using System;
     using System.Collections.Generic;
     
-    public partial class Order
+    public partial class MaterialType
     {
-        public int order_id { get; set; }
-        public int partner_id { get; set; }
-        public int product_id { get; set; }
-        public System.DateTime order_date { get; set; }
-        public string status { get; set; }
-        public Nullable<decimal> total_cost { get; set; }
-    
-        public virtual Partner Partner { get; set; }
-        public virtual Product Product { get; set; }
+        public int MaterialTypeId { get; set; }
+        public string TypeName { get; set; }
+        public decimal DefectPercent { get; set; }
     }
 }

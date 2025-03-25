@@ -17,24 +17,20 @@ namespace Demonstration_exam_2024
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Partner()
         {
-            this.Orders = new HashSet<Order>();
-            this.PartnerSales = new HashSet<PartnerSale>();
+            this.Sales = new HashSet<Sale>();
         }
     
-        public int partner_id { get; set; }
-        public int partner_type_id { get; set; }
-        public string partner_name { get; set; }
-        public string legal_address { get; set; }
-        public string director_name { get; set; }
-        public string inn { get; set; }
-        public Nullable<int> rating { get; set; }
-        public string phone { get; set; }
-        public string email { get; set; }
+        public int PartnerId { get; set; }
+        public string CompanyType { get; set; }
+        public string CompanyName { get; set; }
+        public string DirectorName { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string INN { get; set; }
+        public int Rating { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order> Orders { get; set; }
-        public virtual PartnerType PartnerType { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PartnerSale> PartnerSales { get; set; }
+        public virtual ICollection<Sale> Sales { get; set; }
     }
 }

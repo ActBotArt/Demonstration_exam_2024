@@ -12,21 +12,11 @@ namespace Demonstration_exam_2024
     using System;
     using System.Collections.Generic;
     
-    public partial class Supplier
+    public partial class User
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Supplier()
-        {
-            this.Materials = new HashSet<Material>();
-        }
-    
-        public int supplier_id { get; set; }
-        public string supplier_name { get; set; }
-        public string supplier_type { get; set; }
-        public string inn { get; set; }
-        public string delivery_history { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Material> Materials { get; set; }
+        public int UserId { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public string Role { get; set; }
     }
 }

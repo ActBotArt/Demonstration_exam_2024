@@ -20,8 +20,9 @@ namespace Demonstration_exam_2024
             this.Products = new HashSet<Product>();
         }
     
-        public int product_type_id { get; set; }
-        public string type_name { get; set; }
+        public int ProductTypeId { get; set; }
+        public string TypeName { get; set; }
+        public decimal TypeCoefficient { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }

@@ -12,16 +12,14 @@ namespace Demonstration_exam_2024
     using System;
     using System.Collections.Generic;
     
-    public partial class Warehouse
+    public partial class vw_PartnerSalesHistory
     {
-        public int warehouse_id { get; set; }
-        public int material_id { get; set; }
-        public int employee_id { get; set; }
-        public System.DateTime operation_date { get; set; }
-        public string operation_type { get; set; }
-        public decimal quantity { get; set; }
-    
-        public virtual Employee Employee { get; set; }
-        public virtual Material Material { get; set; }
+        public int SaleId { get; set; }
+        public Nullable<int> PartnerId { get; set; }
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public System.DateTime SaleDate { get; set; }
+        public decimal SalePrice { get; set; }
+        public Nullable<decimal> TotalAmount { get; set; }
     }
 }

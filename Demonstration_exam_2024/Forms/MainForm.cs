@@ -115,7 +115,7 @@ namespace Demonstration_exam_2024.Forms
         {
             try
             {
-                string logoPath = System.IO.Path.Combine(Application.StartupPath, "Resources", "Мастер_пол.png");
+                string logoPath = System.IO.Path.Combine(Application.StartupPath, "..", "Resources", "Мастер_пол.png");
                 if (System.IO.File.Exists(logoPath))
                 {
                     pictureBoxLogo.Image = Image.FromFile(logoPath);

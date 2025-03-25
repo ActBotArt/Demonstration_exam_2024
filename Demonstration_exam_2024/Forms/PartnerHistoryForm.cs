@@ -31,11 +31,6 @@ namespace Demonstration_exam_2024.Forms
                 // Настройка формы
                 this.Text = $"История продаж - {partner.CompanyName}";
 
-                // Загрузка иконки
-                string iconPath = Path.Combine(Application.StartupPath, "Resources", "Мастер_пол.ico");
-                if (File.Exists(iconPath))
-                    this.Icon = new Icon(iconPath);
-
                 // Настройка цветов
                 this.BackColor = Color.White;
                 panelTop.BackColor = ColorTranslator.FromHtml("#F4E8D3");

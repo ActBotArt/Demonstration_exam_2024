@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Linq;
-using System.IO; 
 using Demonstration_exam_2024.Utils;
-using Demonstration_exam_2024.Models;
 
 namespace Demonstration_exam_2024.Forms
 {
@@ -27,23 +24,6 @@ namespace Demonstration_exam_2024.Forms
         {
             try
             {
-                // Настройка формы
-                this.Text = partnerId.HasValue ? "Редактирование партнера" : "Добавление партнера";
-
-                // Загрузка иконки
-                // Загрузка иконки в формате ICO, используя относительный путь от каталога запуска приложения
-                string relativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
-                string iconPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath));
-
-                if (System.IO.File.Exists(iconPath))
-                {
-                    this.Icon = new Icon(iconPath);
-                }
-                else
-                {
-                    MessageBox.Show($"Иконка не найдена по пути: {iconPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-
                 // Настройка цветов
                 this.BackColor = Color.White;
                 panelTop.BackColor = ColorTranslator.FromHtml("#F4E8D3");

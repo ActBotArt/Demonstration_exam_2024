@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq; // Добавляем для использования Count()
+using System.Linq; 
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;

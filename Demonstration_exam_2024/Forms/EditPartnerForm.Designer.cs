@@ -150,6 +150,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numRating)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

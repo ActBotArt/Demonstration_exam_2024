@@ -144,10 +144,10 @@
                 this.btnSave, this.btnCancel
             });
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog; // Исправленная строка
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.StartPosition = FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 
             ((System.ComponentModel.ISupportInitialize)(this.numRating)).EndInit();
             this.ResumeLayout(false);

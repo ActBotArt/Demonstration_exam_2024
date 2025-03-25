@@ -3,6 +3,14 @@
     partial class MainForm
     {
         private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.PictureBox pictureBoxLogo;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnViewHistory;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.Label lblDateTime;
+        private System.Windows.Forms.Label lblUserLogin;
 
         protected override void Dispose(bool disposing)
         {
@@ -22,7 +30,8 @@
             this.btnViewHistory = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.lblDateTime = new System.Windows.Forms.Label();
+            this.lblUserLogin = new System.Windows.Forms.Label();
 
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -35,6 +44,22 @@
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxLogo.TabIndex = 0;
             this.pictureBoxLogo.TabStop = false;
+
+            // lblDateTime
+            this.lblDateTime.AutoSize = true;
+            this.lblDateTime.Location = new System.Drawing.Point(12, 12);
+            this.lblDateTime.Name = "lblDateTime";
+            this.lblDateTime.Size = new System.Drawing.Size(200, 15);
+            this.lblDateTime.Text = "";
+            this.lblDateTime.Font = new System.Drawing.Font("Segoe UI", 9F);
+
+            // lblUserLogin
+            this.lblUserLogin.AutoSize = true;
+            this.lblUserLogin.Location = new System.Drawing.Point(12, 37);
+            this.lblUserLogin.Name = "lblUserLogin";
+            this.lblUserLogin.Size = new System.Drawing.Size(200, 15);
+            this.lblUserLogin.Text = "";
+            this.lblUserLogin.Font = new System.Drawing.Font("Segoe UI", 9F);
 
             // lblSearch
             this.lblSearch.AutoSize = true;
@@ -80,10 +105,6 @@
             this.btnViewHistory.Text = "История продаж";
             this.btnViewHistory.Click += new System.EventHandler(this.btnViewHistory_Click);
 
-            // Timer
-            this.timer.Interval = 1000;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-
             // MainForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -93,6 +114,8 @@
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.lblSearch);
+            this.Controls.Add(this.lblDateTime);
+            this.Controls.Add(this.lblUserLogin);
             this.Controls.Add(this.pictureBoxLogo);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.MinimumSize = new System.Drawing.Size(1000, 600);
@@ -106,13 +129,5 @@
             this.ResumeLayout(false);
             this.PerformLayout();
         }
-
-        private System.Windows.Forms.PictureBox pictureBoxLogo;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnViewHistory;
-        private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Label lblSearch;
-        private System.Windows.Forms.Timer timer;
     }
 }

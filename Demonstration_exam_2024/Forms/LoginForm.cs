@@ -35,11 +35,30 @@ namespace Demonstration_exam_2024.Forms
                 this.BackColor = ColorTranslator.FromHtml("#F4E8D3");
 
                 // Загрузка логотипа
-                string logoPath = System.IO.Path.Combine(Application.StartupPath, "Resources", "Мастер_пол.png");
-                if (System.IO.File.Exists(logoPath))
+                string logoRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.png");
+                string logoFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logoRelativePath));
+
+                if (System.IO.File.Exists(logoFullPath))
                 {
-                    pictureBoxLogo.Image = Image.FromFile(logoPath);
+                    pictureBoxLogo.Image = Image.FromFile(logoFullPath);
                     pictureBoxLogo.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+                else
+                {
+                    MessageBox.Show($"Логотип не найден по пути: {logoFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                // Загрузка иконки
+                string iconRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+                string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
+
+                if (System.IO.File.Exists(iconFullPath))
+                {
+                    this.Icon = new Icon(iconFullPath);
+                }
+                else
+                {
+                    MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
                 // Настройка текстовых полей

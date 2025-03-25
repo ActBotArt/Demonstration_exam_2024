@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
-using Demonstration_exam_2024.Utils;
 using System.Linq;
+using System.Windows.Forms;
 using Demonstration_exam_2024.Models;
+using Demonstration_exam_2024.Utils;
 
 namespace Demonstration_exam_2024.Forms
 {
@@ -26,10 +26,11 @@ namespace Demonstration_exam_2024.Forms
             try
             {
                 // Настройка формы
-                this.Text = partnerId.HasValue ? "Редактирование партнера" : "Добавление партнера";
+                this.Text = partnerId.HasValue ? "Редактирование партнёра" : "Добавление партнёра";
                 this.BackColor = ColorTranslator.FromHtml("#F4E8D3");
 
-                // Настройка комбобокса типов партнеров
+                // Настройка комбобокса типов партнёров
+                cmbPartnerType.Items.Clear();
                 cmbPartnerType.Items.AddRange(new string[] { "ООО", "ИП", "АО", "ПАО" });
                 cmbPartnerType.DropDownStyle = ComboBoxStyle.DropDownList;
 
@@ -41,7 +42,7 @@ namespace Demonstration_exam_2024.Forms
                 btnCancel.BackColor = Color.White;
                 btnCancel.FlatStyle = FlatStyle.Flat;
 
-                // Если это редактирование - загружаем данные партнера
+                // Если это редактирование - загружаем данные партнёра
                 if (partnerId.HasValue)
                 {
                     LoadPartnerData();
@@ -61,7 +62,8 @@ namespace Demonstration_exam_2024.Forms
         {
             try
             {
-                currentPartner = db.Partners.FirstOrDefault(p => p.PartnerId == partnerId);
+                // Используем GetValueOrDefault для избежания проблем с null
+                currentPartner = db.Partners.FirstOrDefault(p => p.PartnerId == partnerId.GetValueOrDefault());
                 if (currentPartner != null)
                 {
                     txtCompanyName.Text = currentPartner.CompanyName;
@@ -76,22 +78,28 @@ namespace Demonstration_exam_2024.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке данных партнера: {ex.Message}",
+                MessageBox.Show($"Ошибка при загрузке данных партнёра: {ex.Message}",
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void SetupValidation()
         {
-            // Валидация ввода в TextBox'ах
-            txtPhone.KeyPress += (s, e) => {
+            // Валидация ввода в TextBox'ах для телефона и ИНН
+            txtPhone.KeyPress += (s, e) =>
+            {
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '+')
+                {
                     e.Handled = true;
+                }
             };
 
-            txtINN.KeyPress += (s, e) => {
+            txtINN.KeyPress += (s, e) =>
+            {
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                {
                     e.Handled = true;
+                }
             };
 
             // Ограничение длины ИНН
@@ -109,7 +117,7 @@ namespace Demonstration_exam_2024.Forms
 
             if (cmbPartnerType.SelectedIndex == -1)
             {
-                MessageBox.Show("Выберите тип партнера!", "Ошибка",
+                MessageBox.Show("Выберите тип партнёра!", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }

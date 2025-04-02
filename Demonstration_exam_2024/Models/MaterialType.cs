@@ -1,9 +1,18 @@
-﻿namespace Demonstration_exam_2024.Models
+﻿using System.Collections.Generic;
+
+namespace Demonstration_exam_2024.Models
 {
-    public class MaterialType
+    public class ProductType
     {
-        public int MaterialTypeId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public int ProductTypeId { get; set; }
+        public string ProductTypeName { get; set; }
+        public decimal ProductTypeCoefficient { get; set; }
+
+        public virtual ICollection<Product> Products { get; set; }
+
+        public ProductType()
+        {
+            Products = new HashSet<Product>();
+        }
     }
 }

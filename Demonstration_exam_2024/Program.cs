@@ -6,25 +6,31 @@ namespace Demonstration_exam_2024
 {
     static class Program
     {
+        /// <summary>
+        /// Главная точка входа для приложения.
+        /// </summary>
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
             try
             {
-                // Проверяем подключение к БД
-                using (var db = new partner_system_dbEntities())
-                {
-                    db.Database.Connection.Open();
-                }
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-                Application.Run(new LoginForm());
+                // Создаем форму авторизации
+                using (var loginForm = new LoginForm())
+                {
+                    // Если авторизация успешна, форма закроется с DialogResult.OK
+                    if (loginForm.ShowDialog() == DialogResult.OK)
+                    {
+                        // Основная форма создается и открывается в LoginForm при успешной авторизации
+                        return;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка подключения к базе данных:\n{ex.Message}",
+                MessageBox.Show($"Критическая ошибка при запуске приложения: {ex.Message}",
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

@@ -120,7 +120,7 @@ namespace Demonstration_exam_2024.Forms
                     txtEmail.Text = partner.Email;
                     txtAddress.Text = partner.Address;
                     txtINN.Text = partner.INN;
-                    numericRating.Value = partner.Rating;
+                    numericRating.Value = partner.Rating.GetValueOrDefault();
                 }
             }
         }

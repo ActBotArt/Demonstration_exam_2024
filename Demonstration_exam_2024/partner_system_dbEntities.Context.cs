@@ -34,8 +34,6 @@ namespace Demonstration_exam_2024
         public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<vw_PartnerDiscounts> vw_PartnerDiscounts { get; set; }
-        public virtual DbSet<vw_PartnerSalesHistory> vw_PartnerSalesHistory { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

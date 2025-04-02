@@ -5,40 +5,34 @@ namespace Demonstration_exam_2024.Utils
 {
     public class DatabaseContext : DbContext
     {
-        public DatabaseContext()
-            : base("name=partner_system_dbEntities")
+        public DatabaseContext() : base("name=partner_system_dbEntities")
         {
-            Database.SetInitializer<DatabaseContext>(null);
-            this.Configuration.LazyLoadingEnabled = true;
-            this.Configuration.ProxyCreationEnabled = true;
+            Configuration.LazyLoadingEnabled = true;
+            Configuration.ProxyCreationEnabled = true;
         }
 
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Partner> Partners { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductType> ProductTypes { get; set; }
         public virtual DbSet<Sale> Sales { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<Partner>().ToTable("Partners");
-            modelBuilder.Entity<Sale>().ToTable("Sales");
-            modelBuilder.Entity<Product>().ToTable("Products");
+            modelBuilder.Entity<Partner>()
+                .HasMany(p => p.Sales)
+                .WithRequired(s => s.Partner)
+                .HasForeignKey(s => s.PartnerId);
 
-            // Отключаем каскадное удаление
-            modelBuilder.Entity<Sale>()
-                .HasRequired(s => s.Partner)
-                .WithMany(p => p.Sales)
-                .HasForeignKey(s => s.PartnerId)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Sales)
+                .WithRequired(s => s.Product)
+                .HasForeignKey(s => s.ProductId);
 
-            modelBuilder.Entity<Sale>()
-                .HasRequired(s => s.Product)
-                .WithMany(p => p.Sales)
-                .HasForeignKey(s => s.ProductId)
-                .WillCascadeOnDelete(false);
-
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ProductType>()
+                .HasMany(pt => pt.Products)
+                .WithRequired(p => p.ProductType)
+                .HasForeignKey(p => p.ProductTypeId);
         }
     }
 }

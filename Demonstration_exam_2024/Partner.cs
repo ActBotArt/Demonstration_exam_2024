@@ -28,7 +28,7 @@ namespace Demonstration_exam_2024
         public string Phone { get; set; }
         public string Address { get; set; }
         public string INN { get; set; }
-        public int Rating { get; set; }
+        public Nullable<decimal> Rating { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sale> Sales { get; set; }

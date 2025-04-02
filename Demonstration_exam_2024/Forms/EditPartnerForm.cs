@@ -34,6 +34,12 @@ namespace Demonstration_exam_2024.Forms
                 cmbPartnerType.Items.AddRange(new string[] { "ООО", "ИП", "АО", "ПАО" });
                 cmbPartnerType.DropDownStyle = ComboBoxStyle.DropDownList;
 
+                // Настройка NumericUpDown для рейтинга
+                numRating.Minimum = 0;
+                numRating.Maximum = 10;
+                numRating.DecimalPlaces = 2;
+                numRating.Value = 0;
+
                 // Настройка кнопок
                 btnSave.BackColor = ColorTranslator.FromHtml("#67BA80");
                 btnSave.ForeColor = Color.White;
@@ -68,7 +74,7 @@ namespace Demonstration_exam_2024.Forms
                 {
                     txtCompanyName.Text = currentPartner.CompanyName;
                     cmbPartnerType.SelectedItem = currentPartner.CompanyType;
-                    numRating.Value = currentPartner.Rating;
+                    numRating.Value = currentPartner.Rating.GetValueOrDefault();
                     txtAddress.Text = currentPartner.Address;
                     txtDirectorName.Text = currentPartner.DirectorName;
                     txtPhone.Text = currentPartner.Phone;
@@ -187,14 +193,14 @@ namespace Demonstration_exam_2024.Forms
                 if (currentPartner == null)
                     currentPartner = new Partner();
 
-                currentPartner.CompanyName = txtCompanyName.Text;
+                currentPartner.CompanyName = txtCompanyName.Text.Trim();
                 currentPartner.CompanyType = cmbPartnerType.SelectedItem.ToString();
-                currentPartner.Rating = (int)numRating.Value;
-                currentPartner.Address = txtAddress.Text;
-                currentPartner.DirectorName = txtDirectorName.Text;
-                currentPartner.Phone = txtPhone.Text;
-                currentPartner.Email = txtEmail.Text;
-                currentPartner.INN = txtINN.Text;
+                currentPartner.Rating = numRating.Value;
+                currentPartner.Address = txtAddress.Text.Trim();
+                currentPartner.DirectorName = txtDirectorName.Text.Trim();
+                currentPartner.Phone = txtPhone.Text.Trim();
+                currentPartner.Email = txtEmail.Text.Trim();
+                currentPartner.INN = txtINN.Text.Trim();
 
                 if (!partnerId.HasValue)
                     db.Partners.Add(currentPartner);

@@ -21,8 +21,8 @@ namespace Demonstration_exam_2024
         }
     
         public int ProductTypeId { get; set; }
-        public string TypeName { get; set; }
-        public decimal TypeCoefficient { get; set; }
+        public string ProductTypeName { get; set; }
+        public decimal ProductTypeCoefficient { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }

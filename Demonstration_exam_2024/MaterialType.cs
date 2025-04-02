@@ -15,7 +15,7 @@ namespace Demonstration_exam_2024
     public partial class MaterialType
     {
         public int MaterialTypeId { get; set; }
-        public string TypeName { get; set; }
-        public decimal DefectPercent { get; set; }
+        public string MaterialTypeName { get; set; }
+        public decimal DefectPercentage { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Diagnostics;
+using System.IO;
 using Demonstration_exam_2024.Utils;
 using Demonstration_exam_2024.Models;
 
@@ -30,23 +30,13 @@ namespace Demonstration_exam_2024.Forms
             try
             {
                 // Настройка формы
-                this.Text = "Мастер-Пол";
-                this.FormBorderStyle = FormBorderStyle.FixedSingle;
-                this.MaximizeBox = false;
-                this.MinimizeBox = false;
-                this.StartPosition = FormStartPosition.CenterScreen;
-
-                // Настройка фона и цветов
-                this.BackColor = ColorTranslator.FromHtml("#F4E8D3");
-
-                // Настройка DataGridView
-                ConfigureDataGridView();
-
-                // Настройка кнопок
-                ConfigureButtons();
+                this.Text = "Мастер-Пол | Партнеры";
 
                 // Загрузка логотипа
                 LoadLogo();
+
+                // Настройка DataGridView
+                ConfigureDataGridView();
 
                 // Загрузка данных
                 LoadData();
@@ -56,7 +46,25 @@ namespace Demonstration_exam_2024.Forms
             }
             catch (Exception ex)
             {
-                ShowError("Ошибка при настройке формы", ex);
+                MessageBox.Show($"Ошибка при настройке формы: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadLogo()
+        {
+            try
+            {
+                string logoPath = Path.Combine(Application.StartupPath, "Resources", "Мастер_пол.png");
+                if (File.Exists(logoPath))
+                {
+                    pictureBoxLogo.Image = Image.FromFile(logoPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке логотипа: {ex.Message}",
+                    "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -64,8 +72,8 @@ namespace Demonstration_exam_2024.Forms
         {
             dataGridView1.BackgroundColor = Color.White;
             dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
-            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#67BA80");
-            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F4E8D3");
+            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.AllowUserToAddRows = false;
@@ -73,59 +81,15 @@ namespace Demonstration_exam_2024.Forms
             dataGridView1.ReadOnly = true;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.RowHeadersVisible = false;
             dataGridView1.BorderStyle = BorderStyle.None;
             dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridView1.RowHeadersVisible = false;
 
             // Настройка стилей строк
             dataGridView1.RowsDefaultCellStyle.BackColor = Color.White;
-            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F5F5F5");
+            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F4E8D3");
             dataGridView1.RowsDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#67BA80");
             dataGridView1.RowsDefaultCellStyle.SelectionForeColor = Color.White;
-        }
-
-        private void ConfigureButtons()
-        {
-            // Настройка кнопок
-            foreach (Control control in this.Controls)
-            {
-                if (control is Button button)
-                {
-                    button.BackColor = ColorTranslator.FromHtml("#67BA80");
-                    button.ForeColor = Color.White;
-                    button.FlatStyle = FlatStyle.Flat;
-                    button.FlatAppearance.BorderSize = 0;
-                    button.Font = new Font("Segoe UI", 9F);
-                    button.Cursor = Cursors.Hand;
-
-                    // Эффекты при наведении
-                    button.MouseEnter += (s, e) => button.BackColor = ColorTranslator.FromHtml("#5AA572");
-                    button.MouseLeave += (s, e) => button.BackColor = ColorTranslator.FromHtml("#67BA80");
-                }
-            }
-
-            // Настройка поля поиска
-            txtSearch.Font = new Font("Segoe UI", 9F);
-            txtSearch.BorderStyle = BorderStyle.FixedSingle;
-            lblSearch.Font = new Font("Segoe UI", 9F);
-        }
-
-        private void LoadLogo()
-        {
-            try
-            {
-                string logoPath = System.IO.Path.Combine(Application.StartupPath, "Resources", "Мастер_пол.png");
-                if (System.IO.File.Exists(logoPath))
-                {
-                    pictureBoxLogo.Image = Image.FromFile(logoPath);
-                    pictureBoxLogo.SizeMode = PictureBoxSizeMode.Zoom;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Ошибка при загрузке логотипа: {ex.Message}");
-            }
         }
 
         private void SetupTimer()
@@ -139,7 +103,7 @@ namespace Demonstration_exam_2024.Forms
 
         private void UpdateDateTime()
         {
-            lblDateTime.Text = $"Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}";
+            lblDateTime.Text = $"Дата и время: {DateTime.Now:dd.MM.yyyy HH:mm:ss}";
         }
 
         private void UpdateUserInfo()
@@ -149,12 +113,13 @@ namespace Demonstration_exam_2024.Forms
                 var user = db.Users.FirstOrDefault(u => u.UserId == userId);
                 if (user != null)
                 {
-                    lblUserLogin.Text = $"Current User's Login: {user.Login}";
+                    lblUserLogin.Text = $"Пользователь: {user.Login}";
                 }
             }
             catch (Exception ex)
             {
-                ShowError("Ошибка при загрузке данных пользователя", ex);
+                MessageBox.Show($"Ошибка при загрузке данных пользователя: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -162,35 +127,33 @@ namespace Demonstration_exam_2024.Forms
         {
             try
             {
-                var partners = db.Partners.Select(p => new
-                {
-                    p.CompanyName,
-                    p.CompanyType,
-                    p.DirectorName,
-                    p.Phone,
-                    p.Email,
-                    p.Address,
-                    p.INN,
-                    p.Rating
-                }).ToList();
+                var partners = db.Partners
+                    .OrderBy(p => p.CompanyName)
+                    .Select(p => new
+                    {
+                        p.PartnerId,
+                        Тип = p.CompanyType,
+                        Наименование = p.CompanyName,
+                        Директор = p.DirectorName,
+                        Телефон = p.Phone,
+                        Email = p.Email,
+                        Адрес = p.Address,
+                        ИНН = p.INN,
+                        Рейтинг = p.Rating
+                    })
+                    .ToList();
 
                 dataGridView1.DataSource = partners;
 
                 if (dataGridView1.Columns.Count > 0)
                 {
-                    dataGridView1.Columns["CompanyName"].HeaderText = "Наименование";
-                    dataGridView1.Columns["CompanyType"].HeaderText = "Тип";
-                    dataGridView1.Columns["DirectorName"].HeaderText = "ФИО Директора";
-                    dataGridView1.Columns["Phone"].HeaderText = "Телефон";
-                    dataGridView1.Columns["Email"].HeaderText = "Email";
-                    dataGridView1.Columns["Address"].HeaderText = "Адрес";
-                    dataGridView1.Columns["INN"].HeaderText = "ИНН";
-                    dataGridView1.Columns["Rating"].HeaderText = "Рейтинг";
+                    dataGridView1.Columns["PartnerId"].Visible = false;
                 }
             }
             catch (Exception ex)
             {
-                ShowError("Ошибка при загрузке данных", ex);
+                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -199,29 +162,35 @@ namespace Demonstration_exam_2024.Forms
             try
             {
                 string searchText = txtSearch.Text.ToLower();
-                var partners = db.Partners.Where(p =>
-                    p.CompanyName.ToLower().Contains(searchText) ||
-                    p.DirectorName.ToLower().Contains(searchText) ||
-                    p.INN.Contains(searchText) ||
-                    p.Phone.Contains(searchText) ||
-                    p.Email.ToLower().Contains(searchText)
-                ).Select(p => new
-                {
-                    p.CompanyName,
-                    p.CompanyType,
-                    p.DirectorName,
-                    p.Phone,
-                    p.Email,
-                    p.Address,
-                    p.INN,
-                    p.Rating
-                }).ToList();
+                var partners = db.Partners
+                    .Where(p =>
+                        p.CompanyName.ToLower().Contains(searchText) ||
+                        p.DirectorName.ToLower().Contains(searchText) ||
+                        p.INN.Contains(searchText) ||
+                        p.Phone.Contains(searchText) ||
+                        p.Email.ToLower().Contains(searchText))
+                    .OrderBy(p => p.CompanyName)
+                    .Select(p => new
+                    {
+                        p.PartnerId,
+                        Тип = p.CompanyType,
+                        Наименование = p.CompanyName,
+                        Директор = p.DirectorName,
+                        Телефон = p.Phone,
+                        Email = p.Email,
+                        Адрес = p.Address,
+                        ИНН = p.INN,
+                        Рейтинг = p.Rating
+                    })
+                    .ToList();
 
                 dataGridView1.DataSource = partners;
+                dataGridView1.Columns["PartnerId"].Visible = false;
             }
             catch (Exception ex)
             {
-                ShowError("Ошибка при поиске", ex);
+                MessageBox.Show($"Ошибка при поиске: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -229,9 +198,9 @@ namespace Demonstration_exam_2024.Forms
         {
             try
             {
-                using (var addForm = new EditPartnerForm(null))
+                using (var form = new PartnerEditForm(null))
                 {
-                    if (addForm.ShowDialog() == DialogResult.OK)
+                    if (form.ShowDialog() == DialogResult.OK)
                     {
                         LoadData();
                     }
@@ -239,69 +208,106 @@ namespace Demonstration_exam_2024.Forms
             }
             catch (Exception ex)
             {
-                ShowError("Ошибка при открытии формы добавления", ex);
+                MessageBox.Show($"Ошибка при добавлении партнера: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            EditSelectedPartner();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow == null) return;
+
+            try
+            {
+                int partnerId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["PartnerId"].Value);
+                string companyName = dataGridView1.CurrentRow.Cells["Наименование"].Value.ToString();
+
+                if (MessageBox.Show($"Вы действительно хотите удалить партнера \"{companyName}\"?",
+                    "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    var partner = db.Partners.Find(partnerId);
+                    if (partner != null)
+                    {
+                        db.Partners.Remove(partner);
+                        db.SaveChanges();
+                        LoadData();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при удалении партнера: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnViewHistory_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.CurrentRow == null)
+            {
+                MessageBox.Show("Выберите партнера для просмотра истории продаж",
+                    "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             try
             {
-                if (dataGridView1.CurrentRow != null)
+                int partnerId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["PartnerId"].Value);
+                using (var form = new SalesHistoryForm(partnerId))
                 {
-                    string inn = dataGridView1.CurrentRow.Cells["INN"].Value.ToString();
-                    var partner = db.Partners.FirstOrDefault(p => p.INN == inn);
-                    if (partner != null)
-                    {
-                        using (var historyForm = new SalesHistoryForm(partner.PartnerId))
-                        {
-                            historyForm.ShowDialog();
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Выберите партнера для просмотра истории продаж",
-                        "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    form.ShowDialog();
                 }
             }
             catch (Exception ex)
             {
-                ShowError("Ошибка при открытии истории продаж", ex);
+                MessageBox.Show($"Ошибка при открытии истории продаж: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
         }
 
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex >= 0)
+            {
+                EditSelectedPartner();
+            }
+        }
+
+        private void EditSelectedPartner()
+        {
+            if (dataGridView1.CurrentRow == null) return;
+
             try
             {
-                if (e.RowIndex >= 0)
+                int partnerId = Convert.ToInt32(dataGridView1.CurrentRow.Cells["PartnerId"].Value);
+                using (var form = new PartnerEditForm(partnerId))
                 {
-                    string inn = dataGridView1.Rows[e.RowIndex].Cells["INN"].Value.ToString();
-                    var partner = db.Partners.FirstOrDefault(p => p.INN == inn);
-                    if (partner != null)
+                    if (form.ShowDialog() == DialogResult.OK)
                     {
-                        using (var editForm = new EditPartnerForm(partner.PartnerId))
-                        {
-                            if (editForm.ShowDialog() == DialogResult.OK)
-                            {
-                                LoadData();
-                            }
-                        }
+                        LoadData();
                     }
                 }
             }
             catch (Exception ex)
             {
-                ShowError("Ошибка при открытии формы редактирования", ex);
+                MessageBox.Show($"Ошибка при редактировании партнера: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void ShowError(string message, Exception ex)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            MessageBox.Show($"{message}: {ex.Message}",
-                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            Debug.WriteLine($"{message}: {ex}");
+            LoadData();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -310,11 +316,6 @@ namespace Demonstration_exam_2024.Forms
             timer?.Stop();
             timer?.Dispose();
             db?.Dispose();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            LoadData();
         }
     }
 }

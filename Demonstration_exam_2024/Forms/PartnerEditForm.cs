@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
-using System.IO; 
+using System.IO;
 using Demonstration_exam_2024.Utils;
 using Demonstration_exam_2024.Models;
 
@@ -30,25 +30,27 @@ namespace Demonstration_exam_2024.Forms
                 // Настройка формы
                 this.Text = partnerId.HasValue ? "Редактирование партнера" : "Добавление партнера";
 
-                // Загрузка иконки
-                // Загрузка иконки в формате ICO, используя относительный путь от каталога запуска приложения
-                string relativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
-                string iconPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath));
-
-                if (System.IO.File.Exists(iconPath))
-                {
-                    this.Icon = new Icon(iconPath);
-                }
-                else
-                {
-                    MessageBox.Show($"Иконка не найдена по пути: {iconPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-
                 // Настройка цветов
-                this.BackColor = Color.White;
+                this.BackColor = ColorTranslator.FromHtml("#FFFFFF");
                 panelTop.BackColor = ColorTranslator.FromHtml("#F4E8D3");
 
-                // Настройка комбобокса типов компаний
+                // Загрузка иконки
+                try
+                {
+                    string iconPath = Path.Combine(Application.StartupPath, "Resources", "Мастер_пол.ico");
+                    if (File.Exists(iconPath))
+                    {
+                        this.Icon = new Icon(iconPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Не удалось загрузить иконку: {ex.Message}",
+                        "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                // Настройка комбобокса
+                cmbCompanyType.Items.Clear();
                 cmbCompanyType.Items.AddRange(new[] { "ООО", "ПАО", "АО", "ЗАО", "ОАО" });
                 cmbCompanyType.DropDownStyle = ComboBoxStyle.DropDownList;
 
@@ -57,6 +59,9 @@ namespace Demonstration_exam_2024.Forms
 
                 // Настройка валидации
                 SetupValidation();
+
+                // Настройка подсказок для полей
+                SetupHints();
             }
             catch (Exception ex)
             {
@@ -67,42 +72,76 @@ namespace Demonstration_exam_2024.Forms
 
         private void StyleButtons()
         {
-            foreach (Button btn in new[] { btnSave, btnCancel })
-            {
-                btn.BackColor = ColorTranslator.FromHtml("#67BA80");
-                btn.ForeColor = Color.White;
-                btn.FlatStyle = FlatStyle.Flat;
-                btn.Font = new Font("Segoe UI", 9F);
-            }
-            btnCancel.BackColor = Color.Gray;
+            btnSave.BackColor = ColorTranslator.FromHtml("#67BA80");
+            btnSave.ForeColor = Color.White;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.FlatAppearance.BorderSize = 0;
+
+            btnCancel.BackColor = Color.FromArgb(255, 74, 74);
+            btnCancel.ForeColor = Color.White;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.FlatAppearance.BorderSize = 0;
         }
 
         private void SetupValidation()
         {
-            // Ограничение длины полей
-            txtCompanyName.MaxLength = 200;
-            txtDirectorName.MaxLength = 150;
-            txtPhone.MaxLength = 20;
-            txtEmail.MaxLength = 100;
-            txtAddress.MaxLength = 300;
-            txtINN.MaxLength = 12;
-
-            // Валидация рейтинга
-            numericRating.Minimum = 0;
-            numericRating.Maximum = 10;
-
-            // Валидация телефона
             txtPhone.KeyPress += (s, e) =>
             {
-                if (!char.IsDigit(e.KeyChar) && e.KeyChar != '+' && e.KeyChar != ' ' && e.KeyChar != '-' && e.KeyChar != '\b')
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                    e.KeyChar != '+' && e.KeyChar != '(' && e.KeyChar != ')' &&
+                    e.KeyChar != ' ' && e.KeyChar != '-')
+                {
                     e.Handled = true;
+                }
             };
 
-            // Валидация ИНН
             txtINN.KeyPress += (s, e) =>
             {
-                if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                {
                     e.Handled = true;
+                }
+            };
+
+            txtINN.MaxLength = 10;
+            numericRating.Minimum = 0;
+            numericRating.Maximum = 10;
+        }
+
+        private void SetupHints()
+        {
+            SetTextBoxHint(txtCompanyName, "Введите название организации");
+            SetTextBoxHint(txtDirectorName, "Введите ФИО директора");
+            SetTextBoxHint(txtPhone, "+7 (XXX) XXX-XX-XX");
+            SetTextBoxHint(txtEmail, "example@domain.com");
+            SetTextBoxHint(txtAddress, "Введите юридический адрес");
+            SetTextBoxHint(txtINN, "Введите 10 цифр ИНН");
+        }
+
+        private void SetTextBoxHint(TextBox textBox, string hint)
+        {
+            if (textBox.Text.Length == 0)
+            {
+                textBox.Text = hint;
+                textBox.ForeColor = Color.Gray;
+            }
+
+            textBox.GotFocus += (s, e) =>
+            {
+                if (textBox.Text == hint)
+                {
+                    textBox.Text = "";
+                    textBox.ForeColor = Color.Black;
+                }
+            };
+
+            textBox.LostFocus += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    textBox.Text = hint;
+                    textBox.ForeColor = Color.Gray;
+                }
             };
         }
 
@@ -115,13 +154,97 @@ namespace Demonstration_exam_2024.Forms
                 {
                     cmbCompanyType.Text = partner.CompanyType;
                     txtCompanyName.Text = partner.CompanyName;
+                    txtCompanyName.ForeColor = Color.Black;
                     txtDirectorName.Text = partner.DirectorName;
+                    txtDirectorName.ForeColor = Color.Black;
                     txtPhone.Text = partner.Phone;
+                    txtPhone.ForeColor = Color.Black;
                     txtEmail.Text = partner.Email;
+                    txtEmail.ForeColor = Color.Black;
                     txtAddress.Text = partner.Address;
+                    txtAddress.ForeColor = Color.Black;
                     txtINN.Text = partner.INN;
+                    txtINN.ForeColor = Color.Black;
                     numericRating.Value = partner.Rating.GetValueOrDefault();
                 }
+            }
+        }
+
+        private bool ValidateInput()
+        {
+            if (string.IsNullOrWhiteSpace(cmbCompanyType.Text))
+            {
+                ShowError("Выберите тип компании");
+                cmbCompanyType.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtCompanyName.Text) ||
+                txtCompanyName.Text == "Введите название организации")
+            {
+                ShowError("Введите название компании");
+                txtCompanyName.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtDirectorName.Text) ||
+                txtDirectorName.Text == "Введите ФИО директора")
+            {
+                ShowError("Введите ФИО директора");
+                txtDirectorName.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtPhone.Text) ||
+                txtPhone.Text == "+7 (XXX) XXX-XX-XX")
+            {
+                ShowError("Введите телефон");
+                txtPhone.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtEmail.Text) ||
+                txtEmail.Text == "example@domain.com" ||
+                !IsValidEmail(txtEmail.Text))
+            {
+                ShowError("Введите корректный email");
+                txtEmail.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtAddress.Text) ||
+                txtAddress.Text == "Введите юридический адрес")
+            {
+                ShowError("Введите юридический адрес");
+                txtAddress.Focus();
+                return false;
+            }
+
+            if (txtINN.Text.Length != 10 || !txtINN.Text.All(char.IsDigit))
+            {
+                ShowError("ИНН должен содержать 10 цифр");
+                txtINN.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ShowError(string message)
+        {
+            MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -141,7 +264,7 @@ namespace Demonstration_exam_2024.Forms
                 partner.Email = txtEmail.Text.Trim();
                 partner.Address = txtAddress.Text.Trim();
                 partner.INN = txtINN.Text.Trim();
-                partner.Rating = (int)numericRating.Value;
+                partner.Rating = numericRating.Value;
 
                 if (!partnerId.HasValue)
                     db.Partners.Add(partner);
@@ -155,53 +278,6 @@ namespace Demonstration_exam_2024.Forms
                 MessageBox.Show($"Ошибка при сохранении: {ex.Message}",
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private bool ValidateInput()
-        {
-            if (string.IsNullOrWhiteSpace(cmbCompanyType.Text))
-            {
-                MessageBox.Show("Выберите тип компании", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtCompanyName.Text))
-            {
-                MessageBox.Show("Введите название компании", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtDirectorName.Text))
-            {
-                MessageBox.Show("Введите ФИО директора", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtPhone.Text))
-            {
-                MessageBox.Show("Введите телефон", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtEmail.Text))
-            {
-                MessageBox.Show("Введите email", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtAddress.Text))
-            {
-                MessageBox.Show("Введите адрес", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtINN.Text) || txtINN.Text.Length != 10)
-            {
-                MessageBox.Show("ИНН должен содержать 10 цифр", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            return true;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

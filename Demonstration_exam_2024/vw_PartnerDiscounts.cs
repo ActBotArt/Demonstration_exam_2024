@@ -12,18 +12,11 @@ namespace Demonstration_exam_2024
     using System;
     using System.Collections.Generic;
     
-    public partial class PartnerType
+    public partial class vw_PartnerDiscounts
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PartnerType()
-        {
-            this.Partners = new HashSet<Partner>();
-        }
-    
-        public int partner_type_id { get; set; }
-        public string type_name { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Partner> Partners { get; set; }
+        public int PartnerId { get; set; }
+        public string CompanyName { get; set; }
+        public Nullable<int> TotalQuantity { get; set; }
+        public int DiscountPercent { get; set; }
     }
 }

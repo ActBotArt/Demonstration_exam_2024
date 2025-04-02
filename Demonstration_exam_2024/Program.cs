@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
+using Demonstration_exam_2024.Forms;
 
 namespace Demonstration_exam_2024
 {
     static class Program
     {
-        /// <summary>
-        /// Главная точка входа для приложения.
-        /// </summary>
         [STAThread]
         static void Main()
         {

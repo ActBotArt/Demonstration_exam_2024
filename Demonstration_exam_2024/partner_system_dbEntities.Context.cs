@@ -27,19 +27,15 @@ namespace Demonstration_exam_2024
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<EquipmentAccess> EquipmentAccesses { get; set; }
-        public virtual DbSet<Material> Materials { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<MaterialType> MaterialTypes { get; set; }
         public virtual DbSet<Partner> Partners { get; set; }
-        public virtual DbSet<PartnerSale> PartnerSales { get; set; }
-        public virtual DbSet<PartnerType> PartnerTypes { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<Production> Productions { get; set; }
         public virtual DbSet<ProductType> ProductTypes { get; set; }
-        public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<Sale> Sales { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<Warehouse> Warehouses { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<vw_PartnerDiscounts> vw_PartnerDiscounts { get; set; }
+        public virtual DbSet<vw_PartnerSalesHistory> vw_PartnerSalesHistory { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

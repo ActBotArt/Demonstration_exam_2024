@@ -17,34 +17,17 @@ namespace Demonstration_exam_2024
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
         {
-            this.Orders = new HashSet<Order>();
-            this.PartnerSales = new HashSet<PartnerSale>();
-            this.Productions = new HashSet<Production>();
+            this.Sales = new HashSet<Sale>();
         }
     
-        public int product_id { get; set; }
-        public int product_type_id { get; set; }
-        public string product_name { get; set; }
-        public string description { get; set; }
-        public Nullable<decimal> minimal_price { get; set; }
-        public Nullable<decimal> length { get; set; }
-        public Nullable<decimal> width { get; set; }
-        public Nullable<decimal> height { get; set; }
-        public Nullable<decimal> weight_no_pack { get; set; }
-        public Nullable<decimal> weight_pack { get; set; }
-        public string certificate { get; set; }
-        public string standard_no { get; set; }
-        public Nullable<int> production_time { get; set; }
-        public Nullable<decimal> cost { get; set; }
-        public Nullable<int> workshop_no { get; set; }
-        public Nullable<int> employees_count { get; set; }
+        public int ProductId { get; set; }
+        public Nullable<int> ProductTypeId { get; set; }
+        public string ProductName { get; set; }
+        public string ArticleNumber { get; set; }
+        public decimal MinCostForPartner { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order> Orders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PartnerSale> PartnerSales { get; set; }
         public virtual ProductType ProductType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Production> Productions { get; set; }
+        public virtual ICollection<Sale> Sales { get; set; }
     }
 }

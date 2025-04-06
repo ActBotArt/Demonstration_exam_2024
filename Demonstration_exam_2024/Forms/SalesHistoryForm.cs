@@ -66,7 +66,9 @@ namespace Demonstration_exam_2024.Forms
                     {
                         s.SaleDate,
                         ProductName = s.Product.ProductName,
-                        s.Quantity
+                        s.Quantity,
+                        Price = s.SalePrice,
+                        Total = s.Quantity * s.SalePrice
                     })
                     .OrderByDescending(s => s.SaleDate)
                     .ToList();
@@ -75,10 +77,33 @@ namespace Demonstration_exam_2024.Forms
 
                 if (dataGridViewSales.Columns.Count > 0)
                 {
-                    dataGridViewSales.Columns["SaleDate"].HeaderText = "Дата продажи";
-                    dataGridViewSales.Columns["ProductName"].HeaderText = "Наименование продукции";
-                    dataGridViewSales.Columns["Quantity"].HeaderText = "Количество";
-                    dataGridViewSales.Columns["SaleDate"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+                    ConfigureColumns();
+
+                    // Добавляем информацию о скидках
+                    var discount = DiscountCalculator.CalculateDiscount(partnerId);
+                    var totalAmount = sales.Sum(s => s.Total);
+                    var discountedAmount = DiscountCalculator.ApplyDiscount(totalAmount, discount);
+
+                    // Создаем панель с информацией о скидках
+                    Panel infoPanel = new Panel
+                    {
+                        Location = new Point(12, dataGridViewSales.Bottom + 10),
+                        Size = new Size(760, 80),
+                        BackColor = ColorTranslator.FromHtml("#F4E8D3")
+                    };
+
+                    Label lblTotalInfo = new Label
+                    {
+                        AutoSize = true,
+                        Location = new Point(10, 10),
+                        Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                        Text = $"Общая сумма: {totalAmount:C2}\n" +
+                               $"Текущая скидка: {discount}%\n" +
+                               $"Сумма со скидкой: {discountedAmount:C2}"
+                    };
+
+                    infoPanel.Controls.Add(lblTotalInfo);
+                    this.Controls.Add(infoPanel);
                 }
             }
             catch (Exception ex)
@@ -88,6 +113,18 @@ namespace Demonstration_exam_2024.Forms
             }
         }
 
+        private void ConfigureColumns()
+        {
+            dataGridViewSales.Columns["SaleDate"].HeaderText = "Дата продажи";
+            dataGridViewSales.Columns["ProductName"].HeaderText = "Наименование продукции";
+            dataGridViewSales.Columns["Quantity"].HeaderText = "Количество";
+            dataGridViewSales.Columns["Price"].HeaderText = "Цена";
+            dataGridViewSales.Columns["Total"].HeaderText = "Сумма";
+
+            dataGridViewSales.Columns["SaleDate"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+            dataGridViewSales.Columns["Price"].DefaultCellStyle.Format = "C2";
+            dataGridViewSales.Columns["Total"].DefaultCellStyle.Format = "C2";
+        }
         private void btnBack_Click(object sender, EventArgs e)
         {
             this.Close();

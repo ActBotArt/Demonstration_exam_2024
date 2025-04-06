@@ -13,6 +13,8 @@ namespace Demonstration_exam_2024.Forms
         private readonly DatabaseContext db;
         private readonly int? partnerId;
         private Partner partner;
+        private Panel salesInfoPanel;
+        private Label lblDiscountInfo;
 
         public PartnerEditForm(int? partnerId = null)
         {
@@ -29,6 +31,9 @@ namespace Demonstration_exam_2024.Forms
             {
                 // Настройка формы
                 this.Text = partnerId.HasValue ? "Редактирование партнера" : "Добавление партнера";
+                lblFormDescription.Text = partnerId.HasValue ?
+                    "Редактирование информации о партнере" :
+                    "Добавление информации о партнере";
 
                 // Настройка цветов
                 this.BackColor = ColorTranslator.FromHtml("#FFFFFF");
@@ -54,14 +59,16 @@ namespace Demonstration_exam_2024.Forms
                 cmbCompanyType.Items.AddRange(new[] { "ООО", "ПАО", "АО", "ЗАО", "ОАО" });
                 cmbCompanyType.DropDownStyle = ComboBoxStyle.DropDownList;
 
-                // Настройка кнопок
-                StyleButtons();
-
                 // Настройка валидации
                 SetupValidation();
 
                 // Настройка подсказок для полей
                 SetupHints();
+
+                // Настройка кнопок
+                btnSave.Click += btnSave_Click;
+                btnCancel.Click += btnCancel_Click;
+                StyleButtons();
             }
             catch (Exception ex)
             {
@@ -76,11 +83,13 @@ namespace Demonstration_exam_2024.Forms
             btnSave.ForeColor = Color.White;
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 
             btnCancel.BackColor = Color.FromArgb(255, 74, 74);
             btnCancel.ForeColor = Color.White;
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         }
 
         private void SetupValidation()
@@ -147,26 +156,108 @@ namespace Demonstration_exam_2024.Forms
 
         private void LoadData()
         {
-            if (partnerId.HasValue)
+            try
             {
-                partner = db.Partners.Find(partnerId.Value);
-                if (partner != null)
+                if (partnerId.HasValue)
                 {
-                    cmbCompanyType.Text = partner.CompanyType;
-                    txtCompanyName.Text = partner.CompanyName;
-                    txtCompanyName.ForeColor = Color.Black;
-                    txtDirectorName.Text = partner.DirectorName;
-                    txtDirectorName.ForeColor = Color.Black;
-                    txtPhone.Text = partner.Phone;
-                    txtPhone.ForeColor = Color.Black;
-                    txtEmail.Text = partner.Email;
-                    txtEmail.ForeColor = Color.Black;
-                    txtAddress.Text = partner.Address;
-                    txtAddress.ForeColor = Color.Black;
-                    txtINN.Text = partner.INN;
-                    txtINN.ForeColor = Color.Black;
-                    numericRating.Value = partner.Rating.GetValueOrDefault();
+                    partner = db.Partners.Find(partnerId.Value);
+                    if (partner != null)
+                    {
+                        // Заполнение данных и отображение информации о продажах
+                        FillPartnerData();
+                        UpdateSalesInfo();
+                    }
                 }
+                else
+                {
+                    // Для нового партнера устанавливаем минимальный размер формы
+                    this.ClientSize = new Size(600, 550);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void FillPartnerData()
+        {
+            cmbCompanyType.Text = partner.CompanyType;
+            txtCompanyName.Text = partner.CompanyName;
+            txtCompanyName.ForeColor = Color.Black;
+            txtDirectorName.Text = partner.DirectorName;
+            txtDirectorName.ForeColor = Color.Black;
+            txtPhone.Text = partner.Phone;
+            txtPhone.ForeColor = Color.Black;
+            txtEmail.Text = partner.Email;
+            txtEmail.ForeColor = Color.Black;
+            txtAddress.Text = partner.Address;
+            txtAddress.ForeColor = Color.Black;
+            txtINN.Text = partner.INN;
+            txtINN.ForeColor = Color.Black;
+            numericRating.Value = partner.Rating ?? 0;
+        }
+
+        private void UpdateSalesInfo()
+        {
+            // Удаляем старые элементы, если они существуют
+            if (salesInfoPanel != null) Controls.Remove(salesInfoPanel);
+            if (lblDiscountInfo != null) Controls.Remove(lblDiscountInfo);
+
+            var totalQuantity = db.Sales
+                .Where(s => s.PartnerId == partnerId.Value)
+                .Sum(s => (long?)s.Quantity) ?? 0;
+
+            var totalAmount = db.Sales
+                .Where(s => s.PartnerId == partnerId.Value)
+                .Sum(s => (decimal?)s.Quantity * s.SalePrice) ?? 0;
+
+            var discount = DiscountCalculator.CalculateDiscount(partnerId.Value);
+
+            if (totalQuantity > 0) // Показываем информацию только если есть продажи
+            {
+                // Создаем панель с информацией о продажах
+                salesInfoPanel = new Panel
+                {
+                    Location = new Point(20, btnCancel.Bottom + 20),
+                    Size = new Size(560, 100),
+                    BackColor = ColorTranslator.FromHtml("#F4E8D3"),
+                    Padding = new Padding(10)
+                };
+
+                var lblSalesInfo = new Label
+                {
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                    Location = new Point(10, 10),
+                    Text = "Информация о продажах партнера:\n" +
+                          $"Общий объем продаж: {totalQuantity:N0} шт.\n" +
+                          $"Общая сумма продаж: {totalAmount:C2}\n" +
+                          $"Текущая скидка: {discount}%"
+                };
+
+                salesInfoPanel.Controls.Add(lblSalesInfo);
+                Controls.Add(salesInfoPanel);
+
+                // Добавляем описание системы скидок
+                lblDiscountInfo = new Label
+                {
+                    AutoSize = true,
+                    Location = new Point(20, salesInfoPanel.Bottom + 10),
+                    Font = new Font("Segoe UI", 9F),
+                    ForeColor = Color.Gray,
+                    Text = "Система скидок:\n" + DiscountCalculator.GetDiscountDescription()
+                };
+                Controls.Add(lblDiscountInfo);
+
+                // Увеличиваем размер формы
+                this.ClientSize = new Size(600, lblDiscountInfo.Bottom + 20);
+            }
+            else
+            {
+                // Если нет продаж, оставляем стандартный размер формы
+                this.ClientSize = new Size(600, btnCancel.Bottom + 20);
             }
         }
 

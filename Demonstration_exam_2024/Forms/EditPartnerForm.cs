@@ -27,6 +27,20 @@ namespace Demonstration_exam_2024.Forms
             {
                 // Настройка формы
                 this.Text = partnerId.HasValue ? "Редактирование партнёра" : "Добавление партнёра";
+
+                // Загрузка иконки
+                string iconRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+                string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
+
+                if (System.IO.File.Exists(iconFullPath))
+                {
+                    this.Icon = new Icon(iconFullPath);
+                }
+                else
+                {
+                    MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
                 this.BackColor = ColorTranslator.FromHtml("#F4E8D3");
 
                 // Настройка комбобокса типов партнёров

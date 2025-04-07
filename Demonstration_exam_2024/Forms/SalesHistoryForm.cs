@@ -28,18 +28,16 @@ namespace Demonstration_exam_2024.Forms
             try
             {
                 // Загрузка иконки
-                try
+                string iconRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+                string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
+
+                if (System.IO.File.Exists(iconFullPath))
                 {
-                    string iconPath = Path.Combine(Application.StartupPath, "Resources", "Мастер_пол.ico");
-                    if (File.Exists(iconPath))
-                    {
-                        this.Icon = new Icon(iconPath);
-                    }
+                    this.Icon = new Icon(iconFullPath);
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show($"Не удалось загрузить иконку: {ex.Message}",
-                        "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
                 // Получение названия партнера

@@ -8,7 +8,10 @@
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/0beffee1-b8da-4209-98ff-49f6099429ff" width="400px"">
-  <img src="https://github.com/user-attachments/assets/fcc886ca-2716-484c-a42e-5b7fbb1413d7" width="500px"">
+  <img src="https://github.com/user-attachments/assets/d5947150-a4fa-43bb-9f39-c0c93590d120" width="540px"">
+  <img src="https://github.com/user-attachments/assets/61e4ee60-7b39-459d-bea6-4d3bd4a1c931" width="400px"">
+  <img src="https://github.com/user-attachments/assets/0d7ff95c-f825-4285-bea0-e91ab1b387fa" width="440px"">
+  <img src="https://github.com/user-attachments/assets/2253dd3b-fbd9-4079-a2cc-7136608eb864" width="500px"">
 </div>
 
 ## Описание проекта

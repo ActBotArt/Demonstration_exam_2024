@@ -29,30 +29,29 @@ namespace Demonstration_exam_2024.Forms
         {
             try
             {
-                // Настройка формы
+                // Настройка заголовка формы
                 this.Text = partnerId.HasValue ? "Редактирование партнера" : "Добавление партнера";
                 lblFormDescription.Text = partnerId.HasValue ?
                     "Редактирование информации о партнере" :
                     "Добавление информации о партнере";
 
+                // Установка начального размера формы
+                this.ClientSize = new Size(600, 500);
+
                 // Настройка цветов
                 this.BackColor = ColorTranslator.FromHtml("#FFFFFF");
                 panelTop.BackColor = ColorTranslator.FromHtml("#F4E8D3");
 
-                // Загрузка иконки
-                string iconRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
-                string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
+                // Загрузка иконки приложения
+                string iconRelativePath = Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+                string iconFullPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
 
-                if (System.IO.File.Exists(iconFullPath))
+                if (File.Exists(iconFullPath))
                 {
                     this.Icon = new Icon(iconFullPath);
                 }
-                else
-                {
-                    MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
 
-                // Настройка комбобокса
+                // Настройка комбобокса типов организаций
                 cmbCompanyType.Items.Clear();
                 cmbCompanyType.Items.AddRange(new[] { "ООО", "ПАО", "АО", "ЗАО", "ОАО" });
                 cmbCompanyType.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -60,7 +59,7 @@ namespace Demonstration_exam_2024.Forms
                 // Настройка валидации
                 SetupValidation();
 
-                // Настройка подсказок для полей
+                // Настройка подсказок
                 SetupHints();
 
                 // Настройка кнопок
@@ -77,12 +76,14 @@ namespace Demonstration_exam_2024.Forms
 
         private void StyleButtons()
         {
+            // Кнопка "Сохранить"
             btnSave.BackColor = ColorTranslator.FromHtml("#67BA80");
             btnSave.ForeColor = Color.White;
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 
+            // Кнопка "Отмена"
             btnCancel.BackColor = Color.FromArgb(255, 74, 74);
             btnCancel.ForeColor = Color.White;
             btnCancel.FlatStyle = FlatStyle.Flat;
@@ -92,6 +93,7 @@ namespace Demonstration_exam_2024.Forms
 
         private void SetupValidation()
         {
+            // Валидация телефона
             txtPhone.KeyPress += (s, e) =>
             {
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
@@ -102,6 +104,7 @@ namespace Demonstration_exam_2024.Forms
                 }
             };
 
+            // Валидация ИНН
             txtINN.KeyPress += (s, e) =>
             {
                 if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
@@ -127,7 +130,7 @@ namespace Demonstration_exam_2024.Forms
 
         private void SetTextBoxHint(TextBox textBox, string hint)
         {
-            if (textBox.Text.Length == 0)
+            if (string.IsNullOrEmpty(textBox.Text))
             {
                 textBox.Text = hint;
                 textBox.ForeColor = Color.Gray;
@@ -161,15 +164,9 @@ namespace Demonstration_exam_2024.Forms
                     partner = db.Partners.Find(partnerId.Value);
                     if (partner != null)
                     {
-                        // Заполнение данных и отображение информации о продажах
                         FillPartnerData();
                         UpdateSalesInfo();
                     }
-                }
-                else
-                {
-                    // Для нового партнера устанавливаем минимальный размер формы
-                    this.ClientSize = new Size(600, 550);
                 }
             }
             catch (Exception ex)
@@ -199,9 +196,19 @@ namespace Demonstration_exam_2024.Forms
 
         private void UpdateSalesInfo()
         {
-            // Удаляем старые элементы, если они существуют
-            if (salesInfoPanel != null) Controls.Remove(salesInfoPanel);
-            if (lblDiscountInfo != null) Controls.Remove(lblDiscountInfo);
+            // Удаление существующих панелей
+            if (salesInfoPanel != null)
+            {
+                Controls.Remove(salesInfoPanel);
+                salesInfoPanel.Dispose();
+                salesInfoPanel = null;
+            }
+            if (lblDiscountInfo != null)
+            {
+                Controls.Remove(lblDiscountInfo);
+                lblDiscountInfo.Dispose();
+                lblDiscountInfo = null;
+            }
 
             var totalQuantity = db.Sales
                 .Where(s => s.PartnerId == partnerId.Value)
@@ -213,9 +220,9 @@ namespace Demonstration_exam_2024.Forms
 
             var discount = DiscountCalculator.CalculateDiscount(partnerId.Value);
 
-            if (totalQuantity > 0) // Показываем информацию только если есть продажи
+            if (totalQuantity > 0)
             {
-                // Создаем панель с информацией о продажах
+                // Создание панели с информацией о продажах
                 salesInfoPanel = new Panel
                 {
                     Location = new Point(20, btnCancel.Bottom + 20),
@@ -229,7 +236,7 @@ namespace Demonstration_exam_2024.Forms
                     AutoSize = true,
                     Font = new Font("Segoe UI", 10F, FontStyle.Bold),
                     Location = new Point(10, 10),
-                    Text = "Информация о продажах партнера:\n" +
+                    Text = $"Информация о продажах партнера:\n" +
                           $"Общий объем продаж: {totalQuantity:N0} шт.\n" +
                           $"Общая сумма продаж: {totalAmount:C2}\n" +
                           $"Текущая скидка: {discount}%"
@@ -238,7 +245,7 @@ namespace Demonstration_exam_2024.Forms
                 salesInfoPanel.Controls.Add(lblSalesInfo);
                 Controls.Add(salesInfoPanel);
 
-                // Добавляем описание системы скидок
+                // Добавление описания системы скидок
                 lblDiscountInfo = new Label
                 {
                     AutoSize = true,
@@ -249,12 +256,12 @@ namespace Demonstration_exam_2024.Forms
                 };
                 Controls.Add(lblDiscountInfo);
 
-                // Увеличиваем размер формы
+                // Корректировка размера формы
                 this.ClientSize = new Size(600, lblDiscountInfo.Bottom + 20);
             }
             else
             {
-                // Если нет продаж, оставляем стандартный размер формы
+                // Стандартный размер формы без статистики
                 this.ClientSize = new Size(600, btnCancel.Bottom + 20);
             }
         }

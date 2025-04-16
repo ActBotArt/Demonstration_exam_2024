@@ -29,19 +29,10 @@ namespace Demonstration_exam_2024.Forms
         {
             try
             {
-                // Настройка формы
                 this.Text = "Мастер-Пол | Партнеры";
-
-                // Загрузка логотипа
                 LoadLogo();
-
-                // Настройка DataGridView
                 ConfigureDataGridView();
-
-                // Загрузка данных
                 LoadData();
-
-                // Обновление информации о пользователе
                 UpdateUserInfo();
             }
             catch (Exception ex)
@@ -53,17 +44,12 @@ namespace Demonstration_exam_2024.Forms
 
         private void LoadLogo()
         {
-            // Загрузка иконки
-            string iconRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
-            string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
+            string iconRelativePath = Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+            string iconFullPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
 
-            if (System.IO.File.Exists(iconFullPath))
+            if (File.Exists(iconFullPath))
             {
                 this.Icon = new Icon(iconFullPath);
-            }
-            else
-            {
-                MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -83,8 +69,6 @@ namespace Demonstration_exam_2024.Forms
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.BorderStyle = BorderStyle.None;
             dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-
-            // Настройка стилей строк
             dataGridView1.RowsDefaultCellStyle.BackColor = Color.White;
             dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#F4E8D3");
             dataGridView1.RowsDefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#67BA80");
@@ -93,8 +77,10 @@ namespace Demonstration_exam_2024.Forms
 
         private void SetupTimer()
         {
-            timer = new Timer();
-            timer.Interval = 1000;
+            timer = new Timer()
+            {
+                Interval = 1000
+            };
             timer.Tick += (s, e) => UpdateDateTime();
             timer.Start();
             UpdateDateTime();
@@ -152,6 +138,22 @@ namespace Demonstration_exam_2024.Forms
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnProducts_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var productsForm = new ProductListForm())
+                {
+                    productsForm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при открытии списка продукции: {ex.Message}",
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

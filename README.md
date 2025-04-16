@@ -11,16 +11,16 @@
 ## 📸 Скриншоты интерфейса
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/0beffee1-b8da-4209-98ff-49f6099429ff" width="400px">
-  <img src="https://github.com/user-attachments/assets/25a3cd6e-6e2e-46a3-821c-7151008a5d1a" width="400px">
-  <img src="https://github.com/user-attachments/assets/9e489428-a3d0-4ff4-99fd-0e653540a6ad" width="400px">
-  <img src="https://github.com/user-attachments/assets/2e4cd269-313d-4453-abec-dd33ec1b3884" width="400px">
-  <img src="https://github.com/user-attachments/assets/91af31ed-720d-44bb-b1a3-8251460a619c" width="400px">
-  <img src="https://github.com/user-attachments/assets/51f26335-f393-4ce7-aaed-dea61c001525" width="400px">
-  <img src="https://github.com/user-attachments/assets/fafc8100-8daa-4cb1-a886-ad88b818e991" width="400px">
-  <img src="https://github.com/user-attachments/assets/e92c0ed2-0588-4926-83ed-a90c003d2c06" width="400px">
-  <img src="https://github.com/user-attachments/assets/1882357f-e17c-4a6e-8bde-6c9ad484b848" width="400px">
-  <img src="https://github.com/user-attachments/assets/93d2e0e9-7440-4313-9c45-6d31c7c11868" width="400px">
+  <img src="https://github.com/user-attachments/assets/0beffee1-b8da-4209-98ff-49f6099429ff" width="300px">
+  <img src="https://github.com/user-attachments/assets/25a3cd6e-6e2e-46a3-821c-7151008a5d1a" width="300px">
+  <img src="https://github.com/user-attachments/assets/9e489428-a3d0-4ff4-99fd-0e653540a6ad" width="300px">
+  <img src="https://github.com/user-attachments/assets/2e4cd269-313d-4453-abec-dd33ec1b3884" width="300px">
+  <img src="https://github.com/user-attachments/assets/91af31ed-720d-44bb-b1a3-8251460a619c" width="300px">
+  <img src="https://github.com/user-attachments/assets/51f26335-f393-4ce7-aaed-dea61c001525" width="300px">
+  <img src="https://github.com/user-attachments/assets/fafc8100-8daa-4cb1-a886-ad88b818e991" width="300px">
+  <img src="https://github.com/user-attachments/assets/e92c0ed2-0588-4926-83ed-a90c003d2c06" width="300px">
+  <img src="https://github.com/user-attachments/assets/1882357f-e17c-4a6e-8bde-6c9ad484b848" width="300px">
+  <img src="https://github.com/user-attachments/assets/93d2e0e9-7440-4313-9c45-6d31c7c11868" width="300px">
   <img src="https://github.com/user-attachments/assets/8c23f89c-4bd3-4c24-8ca4-b441b08dbb43" width="600px">
 </div>
 

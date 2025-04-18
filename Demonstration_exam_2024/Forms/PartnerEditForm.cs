@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
 using System.IO;
+using System.Text.RegularExpressions;
 using Demonstration_exam_2024.Utils;
 using Demonstration_exam_2024.Models;
 
@@ -93,6 +94,29 @@ namespace Demonstration_exam_2024.Forms
 
         private void SetupValidation()
         {
+            // Валидация ФИО директора (только русские и английские буквы)
+            txtDirectorName.KeyPress += (s, e) =>
+            {
+                if (e.KeyChar != (char)Keys.Back && e.KeyChar != ' ' && !IsValidDirectorNameChar(e.KeyChar))
+                {
+                    e.Handled = true;
+                }
+            };
+
+            // Валидация при вставке текста в поле ФИО директора
+            txtDirectorName.TextChanged += (s, e) =>
+            {
+                string text = txtDirectorName.Text;
+                string validText = new string(text.Where(c => IsValidDirectorNameChar(c) || c == ' ').ToArray());
+
+                if (text != validText)
+                {
+                    int selectionStart = txtDirectorName.SelectionStart;
+                    txtDirectorName.Text = validText;
+                    txtDirectorName.SelectionStart = Math.Min(selectionStart, validText.Length);
+                }
+            };
+
             // Валидация телефона
             txtPhone.KeyPress += (s, e) =>
             {
@@ -116,6 +140,19 @@ namespace Demonstration_exam_2024.Forms
             txtINN.MaxLength = 10;
             numericRating.Minimum = 0;
             numericRating.Maximum = 10;
+        }
+
+        private bool IsValidDirectorNameChar(char c)
+        {
+            // Проверка на русские буквы
+            if ((c >= 'А' && c <= 'Я') || (c >= 'а' && c <= 'я') || c == 'Ё' || c == 'ё')
+                return true;
+
+            // Проверка на английские буквы
+            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+                return true;
+
+            return false;
         }
 
         private void SetupHints()
@@ -284,9 +321,10 @@ namespace Demonstration_exam_2024.Forms
             }
 
             if (string.IsNullOrWhiteSpace(txtDirectorName.Text) ||
-                txtDirectorName.Text == "Введите ФИО директора")
+                txtDirectorName.Text == "Введите ФИО директора" ||
+                !txtDirectorName.Text.All(c => IsValidDirectorNameChar(c) || c == ' '))
             {
-                ShowError("Введите ФИО директора");
+                ShowError("Введите корректное ФИО директора (только русские и английские буквы)");
                 txtDirectorName.Focus();
                 return false;
             }

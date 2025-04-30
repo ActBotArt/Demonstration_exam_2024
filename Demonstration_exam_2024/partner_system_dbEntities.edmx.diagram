@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="73e58d4fac0e454484e2c433874effdf" Name="Diagram1">
+      <Diagram DiagramId="4608dc0cd9764db2bcba40e333aeb7a5" Name="Diagram1">
         <EntityTypeShape EntityType="partner_system_dbModel.MaterialType" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="partner_system_dbModel.Partner" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="partner_system_dbModel.Product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
@@ -12,9 +12,11 @@
         <EntityTypeShape EntityType="partner_system_dbModel.Sale" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="partner_system_dbModel.sysdiagram" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="partner_system_dbModel.User" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
-        <AssociationConnector Association="partner_system_dbModel.FK__Sales__PartnerId__5FB337D6" ManuallyRouted="false" />
-        <AssociationConnector Association="partner_system_dbModel.FK__Products__Produc__4222D4EF" ManuallyRouted="false" />
-        <AssociationConnector Association="partner_system_dbModel.FK__Sales__ProductId__60A75C0F" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="partner_system_dbModel.vw_PartnerTotalSales" Width="1.5" PointX="5.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="partner_system_dbModel.vw_SalesDetails" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="partner_system_dbModel.FK__Sales__PartnerId__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.FK__Products__Produc__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="partner_system_dbModel.FK__Sales__ProductId__440B1D61" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

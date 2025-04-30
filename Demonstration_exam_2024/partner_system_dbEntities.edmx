@@ -32,7 +32,7 @@
             <PropertyRef Name="ProductId" />
           </Key>
           <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProductTypeId" Type="int" />
+          <Property Name="ProductTypeId" Type="int" Nullable="false" />
           <Property Name="ProductName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="ArticleNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="MinimumCost" Type="decimal" Precision="10" Scale="2" Nullable="false" />
@@ -50,8 +50,8 @@
             <PropertyRef Name="SaleId" />
           </Key>
           <Property Name="SaleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PartnerId" Type="int" />
-          <Property Name="ProductId" Type="int" />
+          <Property Name="PartnerId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="SaleDate" Type="date" Nullable="false" />
           <Property Name="SalePrice" Type="decimal" Precision="10" Scale="2" Nullable="false" />
@@ -75,8 +75,40 @@
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Role" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Products__Produc__4222D4EF">
-          <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="0..1" />
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "partner_system_db.dbo.vw_PartnerTotalSales" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="vw_PartnerTotalSales">
+          <Key>
+            <PropertyRef Name="PartnerId" />
+            <PropertyRef Name="CompanyName" />
+          </Key>
+          <Property Name="PartnerId" Type="int" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TotalSales" Type="int" />
+          <Property Name="TotalQuantity" Type="int" />
+          <Property Name="TotalAmount" Type="decimal" Precision="38" Scale="2" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "partner_system_db.dbo.vw_SalesDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="vw_SalesDetails">
+          <Key>
+            <PropertyRef Name="SaleId" />
+            <PropertyRef Name="PartnerName" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="Quantity" />
+            <PropertyRef Name="SalePrice" />
+            <PropertyRef Name="SaleDate" />
+          </Key>
+          <Property Name="SaleId" Type="int" Nullable="false" />
+          <Property Name="PartnerName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="SalePrice" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="SaleDate" Type="date" Nullable="false" />
+          <Property Name="TotalAmount" Type="decimal" Precision="21" Scale="2" />
+        </EntityType>
+        <Association Name="FK__Products__Produc__403A8C7D">
+          <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="1" />
           <End Role="Products" Type="Self.Products" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProductTypes">
@@ -87,8 +119,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Sales__PartnerId__5FB337D6">
-          <End Role="Partners" Type="Self.Partners" Multiplicity="0..1" />
+        <Association Name="FK__Sales__PartnerId__4316F928">
+          <End Role="Partners" Type="Self.Partners" Multiplicity="1" />
           <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Partners">
@@ -99,8 +131,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Sales__ProductId__60A75C0F">
-          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+        <Association Name="FK__Sales__ProductId__440B1D61">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
           <End Role="Sales" Type="Self.Sales" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
@@ -150,15 +182,35 @@
           <EntitySet Name="Sales" EntityType="Self.Sales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Products__Produc__4222D4EF" Association="Self.FK__Products__Produc__4222D4EF">
+          <EntitySet Name="vw_PartnerTotalSales" EntityType="Self.vw_PartnerTotalSales" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_PartnerTotalSales].[PartnerId] AS [PartnerId], 
+    [vw_PartnerTotalSales].[CompanyName] AS [CompanyName], 
+    [vw_PartnerTotalSales].[TotalSales] AS [TotalSales], 
+    [vw_PartnerTotalSales].[TotalQuantity] AS [TotalQuantity], 
+    [vw_PartnerTotalSales].[TotalAmount] AS [TotalAmount]
+    FROM [dbo].[vw_PartnerTotalSales] AS [vw_PartnerTotalSales]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_SalesDetails" EntityType="Self.vw_SalesDetails" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_SalesDetails].[SaleId] AS [SaleId], 
+    [vw_SalesDetails].[PartnerName] AS [PartnerName], 
+    [vw_SalesDetails].[ProductName] AS [ProductName], 
+    [vw_SalesDetails].[Quantity] AS [Quantity], 
+    [vw_SalesDetails].[SalePrice] AS [SalePrice], 
+    [vw_SalesDetails].[SaleDate] AS [SaleDate], 
+    [vw_SalesDetails].[TotalAmount] AS [TotalAmount]
+    FROM [dbo].[vw_SalesDetails] AS [vw_SalesDetails]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Products__Produc__403A8C7D" Association="Self.FK__Products__Produc__403A8C7D">
             <End Role="ProductTypes" EntitySet="ProductTypes" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK__Sales__PartnerId__5FB337D6" Association="Self.FK__Sales__PartnerId__5FB337D6">
+          <AssociationSet Name="FK__Sales__PartnerId__4316F928" Association="Self.FK__Sales__PartnerId__4316F928">
             <End Role="Partners" EntitySet="Partners" />
             <End Role="Sales" EntitySet="Sales" />
           </AssociationSet>
-          <AssociationSet Name="FK__Sales__ProductId__60A75C0F" Association="Self.FK__Sales__ProductId__60A75C0F">
+          <AssociationSet Name="FK__Sales__ProductId__440B1D61" Association="Self.FK__Sales__ProductId__440B1D61">
             <End Role="Products" EntitySet="Products" />
             <End Role="Sales" EntitySet="Sales" />
           </AssociationSet>
@@ -189,19 +241,19 @@
           <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="INN" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Rating" Type="Decimal" Precision="5" Scale="2" />
-          <NavigationProperty Name="Sales" Relationship="Self.FK__Sales__PartnerId__5FB337D6" FromRole="Partners" ToRole="Sales" />
+          <NavigationProperty Name="Sales" Relationship="Self.FK__Sales__PartnerId__4316F928" FromRole="Partners" ToRole="Sales" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ProductId" />
           </Key>
           <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductTypeId" Type="Int32" />
+          <Property Name="ProductTypeId" Type="Int32" Nullable="false" />
           <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ArticleNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MinimumCost" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <NavigationProperty Name="ProductType" Relationship="Self.FK__Products__Produc__4222D4EF" FromRole="Products" ToRole="ProductTypes" />
-          <NavigationProperty Name="Sales" Relationship="Self.FK__Sales__ProductId__60A75C0F" FromRole="Products" ToRole="Sales" />
+          <NavigationProperty Name="ProductType" Relationship="Self.FK__Products__Produc__403A8C7D" FromRole="Products" ToRole="ProductTypes" />
+          <NavigationProperty Name="Sales" Relationship="Self.FK__Sales__ProductId__440B1D61" FromRole="Products" ToRole="Sales" />
         </EntityType>
         <EntityType Name="ProductType">
           <Key>
@@ -210,20 +262,20 @@
           <Property Name="ProductTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductTypeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ProductTypeCoefficient" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Products__Produc__4222D4EF" FromRole="ProductTypes" ToRole="Products" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Products__Produc__403A8C7D" FromRole="ProductTypes" ToRole="Products" />
         </EntityType>
         <EntityType Name="Sale">
           <Key>
             <PropertyRef Name="SaleId" />
           </Key>
           <Property Name="SaleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PartnerId" Type="Int32" />
-          <Property Name="ProductId" Type="Int32" />
+          <Property Name="PartnerId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="SaleDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="SalePrice" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
-          <NavigationProperty Name="Partner" Relationship="Self.FK__Sales__PartnerId__5FB337D6" FromRole="Sales" ToRole="Partners" />
-          <NavigationProperty Name="Product" Relationship="Self.FK__Sales__ProductId__60A75C0F" FromRole="Sales" ToRole="Products" />
+          <NavigationProperty Name="Partner" Relationship="Self.FK__Sales__PartnerId__4316F928" FromRole="Sales" ToRole="Partners" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Sales__ProductId__440B1D61" FromRole="Sales" ToRole="Products" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -244,8 +296,36 @@
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Role" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Sales__PartnerId__5FB337D6">
-          <End Role="Partners" Type="Self.Partner" Multiplicity="0..1" />
+        <EntityType Name="vw_PartnerTotalSales">
+          <Key>
+            <PropertyRef Name="PartnerId" />
+            <PropertyRef Name="CompanyName" />
+          </Key>
+          <Property Name="PartnerId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TotalSales" Type="Int32" />
+          <Property Name="TotalQuantity" Type="Int32" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="38" Scale="2" />
+        </EntityType>
+        <EntityType Name="vw_SalesDetails">
+          <Key>
+            <PropertyRef Name="SaleId" />
+            <PropertyRef Name="PartnerName" />
+            <PropertyRef Name="ProductName" />
+            <PropertyRef Name="Quantity" />
+            <PropertyRef Name="SalePrice" />
+            <PropertyRef Name="SaleDate" />
+          </Key>
+          <Property Name="SaleId" Type="Int32" Nullable="false" />
+          <Property Name="PartnerName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="SalePrice" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="SaleDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="21" Scale="2" />
+        </EntityType>
+        <Association Name="FK__Sales__PartnerId__4316F928">
+          <End Role="Partners" Type="Self.Partner" Multiplicity="1" />
           <End Role="Sales" Type="Self.Sale" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Partners">
@@ -256,8 +336,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Products__Produc__4222D4EF">
-          <End Role="ProductTypes" Type="Self.ProductType" Multiplicity="0..1" />
+        <Association Name="FK__Products__Produc__403A8C7D">
+          <End Role="ProductTypes" Type="Self.ProductType" Multiplicity="1" />
           <End Role="Products" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProductTypes">
@@ -268,8 +348,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Sales__ProductId__60A75C0F">
-          <End Role="Products" Type="Self.Product" Multiplicity="0..1" />
+        <Association Name="FK__Sales__ProductId__440B1D61">
+          <End Role="Products" Type="Self.Product" Multiplicity="1" />
           <End Role="Sales" Type="Self.Sale" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
@@ -288,15 +368,17 @@
           <EntitySet Name="Sales" EntityType="Self.Sale" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK__Sales__PartnerId__5FB337D6" Association="Self.FK__Sales__PartnerId__5FB337D6">
+          <EntitySet Name="vw_PartnerTotalSales" EntityType="Self.vw_PartnerTotalSales" />
+          <EntitySet Name="vw_SalesDetails" EntityType="Self.vw_SalesDetails" />
+          <AssociationSet Name="FK__Sales__PartnerId__4316F928" Association="Self.FK__Sales__PartnerId__4316F928">
             <End Role="Partners" EntitySet="Partners" />
             <End Role="Sales" EntitySet="Sales" />
           </AssociationSet>
-          <AssociationSet Name="FK__Products__Produc__4222D4EF" Association="Self.FK__Products__Produc__4222D4EF">
+          <AssociationSet Name="FK__Products__Produc__403A8C7D" Association="Self.FK__Products__Produc__403A8C7D">
             <End Role="ProductTypes" EntitySet="ProductTypes" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK__Sales__ProductId__60A75C0F" Association="Self.FK__Sales__ProductId__60A75C0F">
+          <AssociationSet Name="FK__Sales__ProductId__440B1D61" Association="Self.FK__Sales__ProductId__440B1D61">
             <End Role="Products" EntitySet="Products" />
             <End Role="Sales" EntitySet="Sales" />
           </AssociationSet>
@@ -422,6 +504,30 @@
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_PartnerTotalSales">
+            <EntityTypeMapping TypeName="partner_system_dbModel.vw_PartnerTotalSales">
+              <MappingFragment StoreEntitySet="vw_PartnerTotalSales">
+                <ScalarProperty Name="PartnerId" ColumnName="PartnerId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="TotalSales" ColumnName="TotalSales" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_SalesDetails">
+            <EntityTypeMapping TypeName="partner_system_dbModel.vw_SalesDetails">
+              <MappingFragment StoreEntitySet="vw_SalesDetails">
+                <ScalarProperty Name="SaleId" ColumnName="SaleId" />
+                <ScalarProperty Name="PartnerName" ColumnName="PartnerName" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="SaleDate" ColumnName="SaleDate" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

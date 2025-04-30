@@ -21,7 +21,7 @@ namespace Demonstration_exam_2024
         }
     
         public int ProductId { get; set; }
-        public Nullable<int> ProductTypeId { get; set; }
+        public int ProductTypeId { get; set; }
         public string ProductName { get; set; }
         public string ArticleNumber { get; set; }
         public decimal MinimumCost { get; set; }

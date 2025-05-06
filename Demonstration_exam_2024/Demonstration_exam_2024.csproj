@@ -244,8 +244,8 @@
       <DependentUpon>partner_system_dbEntities.edmx</DependentUpon>
       <LastGenOutput>partner_system_dbEntities.cs</LastGenOutput>
     </Content>
-    <Content Include="Resources\Мастер_пол.ico" />
-    <Content Include="Resources\Мастер_пол.png" />
+    <Content Include="Res\Мастер_пол.ico" />
+    <Content Include="Res\Мастер_пол.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

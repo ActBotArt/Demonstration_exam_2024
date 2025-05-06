@@ -56,7 +56,7 @@ namespace Demonstration_exam_2024.Forms
 
                 StyleButtons();
 
-                string iconPath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+                string iconPath = System.IO.Path.Combine("..", "..", "Res", "Мастер_пол.ico");
                 string fullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconPath));
                 if (System.IO.File.Exists(fullPath))
                 {

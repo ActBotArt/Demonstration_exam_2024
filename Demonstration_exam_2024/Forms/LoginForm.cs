@@ -35,7 +35,7 @@ namespace Demonstration_exam_2024.Forms
                 this.BackColor = ColorTranslator.FromHtml("#F4E8D3");
 
                 // Загрузка логотипа
-                string logoRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.png");
+                string logoRelativePath = System.IO.Path.Combine("..", "..", "Res", "Мастер_пол.png");
                 string logoFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logoRelativePath));
 
                 if (System.IO.File.Exists(logoFullPath))
@@ -49,7 +49,7 @@ namespace Demonstration_exam_2024.Forms
                 }
 
                 // Загрузка иконки
-                string iconRelativePath = System.IO.Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+                string iconRelativePath = System.IO.Path.Combine("..", "..", "Res", "Мастер_пол.ico");
                 string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
 
                 if (System.IO.File.Exists(iconFullPath))

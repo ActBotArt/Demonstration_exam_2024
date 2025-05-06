@@ -44,7 +44,7 @@ namespace Demonstration_exam_2024.Forms
 
         private void LoadLogo()
         {
-            string iconRelativePath = Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+            string iconRelativePath = Path.Combine("..", "..", "Res", "Мастер_пол.ico");
             string iconFullPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
 
             if (File.Exists(iconFullPath))

@@ -37,7 +37,7 @@ namespace Demonstration_exam_2024.Forms
                     "Добавление информации о продукции";
 
                 // Загрузка иконки
-                string iconPath = Path.Combine("..", "..", "Resources", "Мастер_пол.ico");
+                string iconPath = Path.Combine("..", "..", "Res", "Мастер_пол.ico");
                 string fullPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconPath));
                 if (File.Exists(fullPath))
                 {

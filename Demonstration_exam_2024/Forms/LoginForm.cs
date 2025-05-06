@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq; 
+using System.Linq;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -10,33 +10,36 @@ namespace Demonstration_exam_2024.Forms
 {
     public partial class LoginForm : Form
     {
+        // Контекст базы данных для работы с пользователями
         private readonly DatabaseContext db;
-        private ToolTip toolTip; // Изменяем объявление tooltip
+        // Подсказки для полей ввода
+        private ToolTip toolTip;
 
+        // Конструктор формы
         public LoginForm()
         {
-            InitializeComponent();
-            db = new DatabaseContext();
-            SetupForm();
-            TestDatabaseConnection();
+            InitializeComponent();        // Инициализация компонентов формы
+            db = new DatabaseContext();   // Создание контекста БД
+            SetupForm();                 // Настройка внешнего вида формы
+            TestDatabaseConnection();     // Проверка подключения к БД
         }
 
+        // Метод настройки внешнего вида формы
         private void SetupForm()
         {
             try
             {
-                // Настройка формы
+                // Настройка заголовка и поведения окна
                 this.Text = "Мастер-Пол - Авторизация";
-                this.FormBorderStyle = FormBorderStyle.FixedSingle;
-                this.MaximizeBox = false;
-                this.StartPosition = FormStartPosition.CenterScreen;
+                this.FormBorderStyle = FormBorderStyle.FixedSingle;  // Фиксированный размер окна
+                this.MaximizeBox = false;                           // Запрет развертывания окна
+                this.StartPosition = FormStartPosition.CenterScreen; // Центрирование окна
+                this.BackColor = ColorTranslator.FromHtml("#F4E8D3"); // Установка цвета фона
 
-                // Настройка фона и цветов
-                this.BackColor = ColorTranslator.FromHtml("#F4E8D3");
-
-                // Загрузка логотипа
+                // Загрузка и установка логотипа
                 string logoRelativePath = System.IO.Path.Combine("..", "..", "Res", "Мастер_пол.png");
-                string logoFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logoRelativePath));
+                string logoFullPath = System.IO.Path.GetFullPath(
+                    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logoRelativePath));
 
                 if (System.IO.File.Exists(logoFullPath))
                 {
@@ -45,12 +48,14 @@ namespace Demonstration_exam_2024.Forms
                 }
                 else
                 {
-                    MessageBox.Show($"Логотип не найден по пути: {logoFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Логотип не найден по пути: {logoFullPath}",
+                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
-                // Загрузка иконки
+                // Загрузка и установка иконки приложения
                 string iconRelativePath = System.IO.Path.Combine("..", "..", "Res", "Мастер_пол.ico");
-                string iconFullPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
+                string iconFullPath = System.IO.Path.GetFullPath(
+                    System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, iconRelativePath));
 
                 if (System.IO.File.Exists(iconFullPath))
                 {
@@ -58,26 +63,27 @@ namespace Demonstration_exam_2024.Forms
                 }
                 else
                 {
-                    MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Иконка не найдена по пути: {iconFullPath}",
+                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
-                // Настройка текстовых полей
-                txtLogin.Text = "admin"; // Значение по умолчанию
-                txtPassword.Text = "admin"; // Значение по умолчанию
-                txtPassword.PasswordChar = '●';
+                // Настройка полей ввода
+                txtLogin.Text = "admin";           // Логин по умолчанию
+                txtPassword.Text = "admin";        // Пароль по умолчанию
+                txtPassword.PasswordChar = '●';    // Маскировка символов пароля
 
-                // Настройка кнопки
+                // Настройка внешнего вида кнопки входа
                 btnLogin.BackColor = ColorTranslator.FromHtml("#67BA80");
                 btnLogin.ForeColor = Color.White;
                 btnLogin.FlatStyle = FlatStyle.Flat;
                 btnLogin.FlatAppearance.BorderSize = 0;
                 btnLogin.Cursor = Cursors.Hand;
 
-                // Добавляем эффект при наведении на кнопку
+                // Добавление эффектов при наведении на кнопку
                 btnLogin.MouseEnter += (s, e) => btnLogin.BackColor = ColorTranslator.FromHtml("#5AA572");
                 btnLogin.MouseLeave += (s, e) => btnLogin.BackColor = ColorTranslator.FromHtml("#67BA80");
 
-                // Инициализация и настройка ToolTip
+                // Настройка всплывающих подсказок
                 toolTip = new ToolTip();
                 toolTip.SetToolTip(txtLogin, "Введите логин");
                 toolTip.SetToolTip(txtPassword, "Введите пароль");
@@ -89,11 +95,11 @@ namespace Demonstration_exam_2024.Forms
             }
         }
 
+        // Метод проверки подключения к базе данных
         private void TestDatabaseConnection()
         {
             try
             {
-                // Используем ToList() перед Count() для выполнения запроса
                 var userCount = db.Users.ToList().Count;
                 Debug.WriteLine($"Подключение успешно. Количество пользователей: {userCount}");
             }
@@ -104,15 +110,18 @@ namespace Demonstration_exam_2024.Forms
             }
         }
 
+        // Обработчик нажатия кнопки входа
         private void btnLogin_Click(object sender, EventArgs e)
         {
             try
             {
+                // Поиск пользователя в БД по логину и паролю
                 var user = db.Users.FirstOrDefault(u =>
                     u.Login == txtLogin.Text && u.Password == txtPassword.Text);
 
                 if (user != null)
                 {
+                    // Если пользователь найден, открываем главную форму
                     var mainForm = new MainForm(user.UserId, user.Role);
                     this.Hide();
                     mainForm.ShowDialog();
@@ -120,6 +129,7 @@ namespace Demonstration_exam_2024.Forms
                 }
                 else
                 {
+                    // Если пользователь не найден, показываем ошибку
                     MessageBox.Show("Неверный логин или пароль!",
                         "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -131,6 +141,7 @@ namespace Demonstration_exam_2024.Forms
             }
         }
 
+        // Освобождение ресурсов при закрытии формы
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
@@ -140,20 +151,22 @@ namespace Demonstration_exam_2024.Forms
             }
         }
 
+        // Обработчик нажатия Enter в поле логина
         private void txtLogin_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                txtPassword.Focus();
+                txtPassword.Focus();  // Переход к полю пароля
                 e.Handled = true;
             }
         }
 
+        // Обработчик нажатия Enter в поле пароля
         private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                btnLogin_Click(sender, e);
+                btnLogin_Click(sender, e);  // Имитация нажатия кнопки входа
                 e.Handled = true;
             }
         }
